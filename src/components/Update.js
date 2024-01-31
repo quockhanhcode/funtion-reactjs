@@ -6,7 +6,6 @@ import Button from "react-bootstrap/Button";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 function Update() {
-  // const [data, setData] = useState([]);
   const [values, setValue] = useState({
     firstname: "",
     lastname: "",

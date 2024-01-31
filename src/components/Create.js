@@ -12,9 +12,15 @@ function Create() {
   });
   const navigate = useNavigate();
 
+  const [age, setAges] = useState('');
+
   const handleSubmit = (event) => {
-    event.preventDefault();
-    axios
+
+    const inputAge = parseInt(values.age, 10);
+
+    if(inputAge > 1 && inputAge <= 100){
+      // setAges(inputAge);
+      axios
       .post(
         "https://64eb2cbfe51e1e82c5770dbb.mockapi.io/project-demo/project-demo",
         values
@@ -24,7 +30,13 @@ function Create() {
         navigate("/");
       })
       .catch((err) => console.error(err));
-      console.log("a");
+    }
+    else{
+      window.alert("Số tuổi không quá 100");
+      setValue((prevValues) => ({ ...prevValues, age: "" }));
+    }
+
+    event.preventDefault();
   };
   const box = {
     maxWidth: "950px",
@@ -63,13 +75,14 @@ function Create() {
               <Form.Label>Age</Form.Label>
               <Form.Control
                 type="number"
-                placeholder="Last Name"
+                placeholder="age"
                 name="age"
                 required
+                value={values.age}
                 onChange={(e) => setValue({ ...values, age: e.target.value })}
               />
             </Form.Group>
-            <button  variant="primary" size="lg">
+            <button type="submit"  variant="primary" size="lg">
               Submit
             </button>{" "}
           </Form>
