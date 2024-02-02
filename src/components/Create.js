@@ -12,7 +12,7 @@ function Create() {
   });
   const navigate = useNavigate();
 
-  const [age, setAges] = useState('');
+  // const [age, setAges] = useState('');
 
   const handleSubmit = (event) => {
 
@@ -27,6 +27,7 @@ function Create() {
       )
       .then((res)=> {
         console.log(res);
+        setValue((prevData) => [...prevData]);
         navigate("/");
       })
       .catch((err) => console.error(err));

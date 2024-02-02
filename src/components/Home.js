@@ -13,6 +13,7 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage] = useState(10);
 
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     axios
@@ -49,11 +50,10 @@ function Home() {
 
   const startIndex = currentPage * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentData = data.slice(startIndex, endIndex);
+  // const currentData = data.slice(startIndex, endIndex);
 
   // search
 
-  
   // search
 
   axios.defaults.headers = {
@@ -70,11 +70,7 @@ function Home() {
       <h1>list user</h1>
       <div className="search-header">
         <div className="search-text">Search:</div>
-        <input
-          // value={searchItem}
-          // onChange={handleInputChange}
-          id="search-box"
-        />
+        <input onChange={(e) => setSearch(e.target.value)} id="search-box" />
       </div>
       <Button className="mb3" variant="primary" size="lg" active>
         <Link style={styleLink} to={"/create"}>
@@ -93,38 +89,40 @@ function Home() {
             </tr>
           </thead>
           <tbody>
-            {currentData.map((key, index) => (
-              <tr key={index}>
-                <td>{key.id}</td>
-                <td>{key.firstname}</td>
-                <td>{key.lastname}</td>
-                <td>{key.age}</td>
-                <td>
-                  <Button variant="primary" size="lg">
-                    <Link
-                      style={styleLink}
-                      to={`/update/${key.id}`}
-                      variant="primary"
+            {data.filter((key) => {
+                return(
+                  search.toLowerCase() === "" || key.firstname.toLowerCase().includes(search.toLowerCase()));
+              }).slice(startIndex, endIndex).map((key, index) => (
+                <tr key={index}>
+                  <td>{key.id}</td>
+                  <td>{key.firstname}</td>
+                  <td>{key.lastname}</td>
+                  <td>{key.age}</td>
+                  <td>
+                    <Button variant="primary" size="lg">
+                      <Link
+                        style={styleLink}
+                        to={`/update/${key.id}`}
+                        variant="primary"
+                        size="lg"
+                      >
+                        Edit
+                      </Link>
+                    </Button>
+                    <Button
+                      variant="secondary"
                       size="lg"
-                      active
+                      className="ms-3"
+                      onClick={(e) => handleDelete(key.id)}
                     >
-                      Edit
-                    </Link>
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    size="lg"
-                    className="ms-3"
-                    onClick={(e) => handleDelete(key.id)}
-                  >
-                    <Link style={styleLink} to={"/home"}>
-                      {" "}
-                      Delete
-                    </Link>
-                  </Button>
-                </td>
-              </tr>
-            ))}
+                      <Link style={styleLink} to={"/home"}>
+                        {" "}
+                        Delete
+                      </Link>
+                    </Button>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </Table>
       </div>
